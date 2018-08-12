@@ -1,6 +1,6 @@
 # Type and Commit
 
-Credit to [MarinX's golang keylogger](https://github.com/MarinX/keylogger)
+Credit to [MarinX's golang keylogger](https://github.com/MarinX/keylogger) for providing keylogging software
 
 ## How it works
 
