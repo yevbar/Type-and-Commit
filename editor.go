@@ -1,12 +1,12 @@
 package main
 
 import (
+	"fmt"
+	"github.com/MarinX/keylogger"
 	"os"
 	"os/exec"
-	"fmt"
 	"strings"
 	"time"
-	"github.com/MarinX/keylogger"
 )
 
 func FormatTime(t time.Time) string {
@@ -20,11 +20,11 @@ func Commit(Input string, date time.Time) {
 	os.Setenv("GIT_COMMIT_DATE", Formatted)
 
 	msg := fmt.Sprintf("Typed " + Input)
-	exec.Command("git", "commit", "--allow-empty", "-m " + msg).Start()
+	exec.Command("git", "commit", "--allow-empty", "-m "+msg).Start()
 }
 
 func main() {
-	if (len(os.Args) != 2) {
+	if len(os.Args) != 2 {
 		fmt.Println("Usage ./editor filename")
 		return
 	}
@@ -37,7 +37,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
 
 	devs, err := keylogger.NewDevices()
 	if err != nil {
@@ -57,35 +56,35 @@ func main() {
 
 	var LastPressed string = ""
 	TheTime := time.Now()
-	TheTime = TheTime.AddDate(-1,0,-5)
+	TheTime = TheTime.AddDate(-1, 0, -5)
 
 	for i := range in {
 		if i.Type == keylogger.EV_KEY {
 			var CurrentlyPressed = i.KeyString()
-			if (CurrentlyPressed != "") {
-				if (CurrentlyPressed != LastPressed) {
-					if (IsDesired(CurrentlyPressed)) {
+			if CurrentlyPressed != "" {
+				if CurrentlyPressed != LastPressed {
+					if IsDesired(CurrentlyPressed) {
 						Commit(CurrentlyPressed, TheTime)
-						TheTime = TheTime.AddDate(0,0,1)
-						if (time.Now().Before(TheTime)) {
+						TheTime = TheTime.AddDate(0, 0, 1)
+						if time.Now().Before(TheTime) {
 							TheTime = time.Now()
-							TheTime = TheTime.AddDate(-1,0,-5)
+							TheTime = TheTime.AddDate(-1, 0, -5)
 						}
 						LastPressed = CurrentlyPressed
-					} else if (CurrentlyPressed == "SPACE") {
+					} else if CurrentlyPressed == "SPACE" {
 						Commit("SPACE", TheTime)
-						TheTime = TheTime.AddDate(0,0,1)
-						if (time.Now().Before(TheTime)) {
+						TheTime = TheTime.AddDate(0, 0, 1)
+						if time.Now().Before(TheTime) {
 							TheTime = time.Now()
-							TheTime = TheTime.AddDate(-1,0,-5)
+							TheTime = TheTime.AddDate(-1, 0, -5)
 						}
 						LastPressed = CurrentlyPressed
-					} else if (CurrentlyPressed == "BS") {
+					} else if CurrentlyPressed == "BS" {
 						Commit("BACKSPACE", TheTime)
-						TheTime = TheTime.AddDate(0,0,1)
-						if (time.Now().Before(TheTime)) {
+						TheTime = TheTime.AddDate(0, 0, 1)
+						if time.Now().Before(TheTime) {
 							TheTime = time.Now()
-							TheTime = TheTime.AddDate(-1,0,-5)
+							TheTime = TheTime.AddDate(-1, 0, -5)
 						}
 						LastPressed = CurrentlyPressed
 					}
